@@ -1,6 +1,6 @@
 import { SharedLayout } from './layouts';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { HomePage } from './pages';
+import { HomePage, LoginPage } from './pages';
 
 const router = createBrowserRouter([
   {
@@ -10,6 +10,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: '/login',
+        element: <LoginPage />,
       },
     ],
   },

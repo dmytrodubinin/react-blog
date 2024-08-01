@@ -1,8 +1,20 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { FaFacebook, FaGithub, FaHashtag } from 'react-icons/fa';
 import { FaX } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
+  const [cats, setCats] = useState([]);
+
+  useEffect(() => {
+    const getCats = async () => {
+      const res = await axios.get('/api/categories');
+      setCats(res.data);
+    };
+    getCats();
+  }, []);
+
   return (
     <div className="w-full rounded-2xl bg-base-200 p-2 md:w-1/4">
       <div className="mb-8">
@@ -28,26 +40,16 @@ const Sidebar = () => {
           <hr />
         </div>
         <div className="flex flex-wrap gap-2">
-          <button className="btn btn-primary">
-            <FaHashtag /> React
-            <div className="badge">+7</div>
-          </button>
-          <button className="btn btn-primary">
-            <FaHashtag /> JavaScript
-            <div className="badge badge-secondary">+99</div>
-          </button>
-          <button className="btn btn-primary">
-            <FaHashtag /> HTML
-            <div className="badge badge-secondary">+99</div>
-          </button>
-          <button className="btn btn-primary">
-            <FaHashtag /> SASS
-            <div className="badge badge-secondary">+99</div>
-          </button>
-          <button className="btn btn-primary">
-            <FaHashtag /> Nodejs
-            <div className="badge badge-secondary">+99</div>
-          </button>
+          {cats.map((cat) => (
+            <Link
+              key={cat._id}
+              to={`/?cat=${cat.name}`}
+              className="btn btn-primary"
+            >
+              <FaHashtag />
+              {cat.name}
+            </Link>
+          ))}
         </div>
       </div>
       <div className="mb-8">

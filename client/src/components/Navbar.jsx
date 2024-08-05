@@ -1,11 +1,16 @@
 import { RiMenu2Fill } from 'react-icons/ri';
-import { FaRegUserCircle, FaSearch } from 'react-icons/fa';
+import { FaRegUserCircle, FaSearch, FaUserCheck } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { Context } from '../context/Context';
 
 const Navbar = () => {
-  const { user } = useContext(Context);
+  const { user, dispatch } = useContext(Context);
+
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' });
+  };
+
   return (
     <nav className="navbar bg-base-200">
       <div className="navbar-start">
@@ -76,10 +81,11 @@ const Navbar = () => {
                 className="avatar btn btn-circle btn-ghost"
               >
                 <div className="w-8 rounded-full">
-                  <img
-                    alt="user photo"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
+                  {user.profilePic ? (
+                    <img alt={user.username} src={user.profilePic} />
+                  ) : (
+                    <FaUserCheck className="h-full w-full" />
+                  )}
                 </div>
               </div>
               <ul
@@ -95,8 +101,8 @@ const Navbar = () => {
                 <li>
                   <Link to="/settings">Settings</Link>
                 </li>
-                <li>
-                  <Link to="/logout">Logout</Link>
+                <li className="btn btn-error" onClick={handleLogout}>
+                  Logout
                 </li>
               </ul>
             </>

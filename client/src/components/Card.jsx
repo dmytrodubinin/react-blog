@@ -2,11 +2,17 @@ import { FaHashtag } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Card = ({ post }) => {
+  const PF = 'http://localhost:5000/images/';
   return (
     <div className="card card-compact bg-base-100 shadow-xl">
       {post.photo ? (
         <figure>
-          <img src={post.photo} alt="title" />
+          <img
+            className="max-h-80 w-full object-cover"
+            // src={post.photo}
+            src={PF + post.photo}
+            alt="title"
+          />
         </figure>
       ) : (
         <figure>

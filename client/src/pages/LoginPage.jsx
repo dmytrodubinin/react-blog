@@ -1,29 +1,56 @@
-import { Form, Link } from 'react-router-dom';
+import axios from 'axios';
+import { useContext, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Context } from '../context/Context';
+import { MdWarningAmber } from 'react-icons/md';
 
 const LoginPage = () => {
+  const userRef = useRef();
+  const passwordRef = useRef();
+  const { dispatch, isFetching } = useContext(Context);
+  const [error, setError] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    dispatch({ type: 'LOGIN_START' });
+    try {
+      const res = await axios.post('/api/auth/login', {
+        username: userRef.current.value,
+        password: passwordRef.current.value,
+      });
+      dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
+    } catch (err) {
+      dispatch({ type: 'LOGIN_FAILURE' });
+      setError(true);
+    }
+  };
+
   return (
     <section className="grid h-screen place-items-center">
-      <Form
-        method="post"
+      <form
         className="card flex w-96 flex-col gap-y-4 bg-base-100 p-8 shadow-lg"
+        onSubmit={handleSubmit}
       >
         <h4 className="text-center text-3xl font-bold">Login</h4>
         <input
-          type="email"
-          name="email"
+          type="text"
+          name="username"
           className="input input-bordered"
-          placeholder="email"
+          placeholder="Enter your username"
+          ref={userRef}
         />
         <input
           type="password"
           name="password"
           className="input input-bordered"
-          placeholder="password"
+          placeholder="Enter your password"
+          ref={passwordRef}
         />
-        {/* <div className="mt-4"> */}
-        {/*   <button class="btn">submit</button> */}
-        {/* </div> */}
-        <button type="button" className="btn btn-secondary btn-block">
+        <button
+          type="submit"
+          className="btn btn-secondary btn-block"
+          disabled={isFetching}
+        >
           Login
         </button>
         <p className="text-center">
@@ -35,7 +62,13 @@ const LoginPage = () => {
             register
           </Link>
         </p>
-      </Form>
+        {error && (
+          <div role="alert" className="alert alert-error">
+            <MdWarningAmber className="text-xl" />
+            <span>Something went wrong!</span>
+          </div>
+        )}
+      </form>
     </section>
   );
 };

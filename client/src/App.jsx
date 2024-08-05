@@ -1,33 +1,52 @@
-import { SharedLayout } from './layouts';
+import { useContext } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { HomePage, LoginPage, PostPage, RegisterPage } from './pages';
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <SharedLayout />,
-    children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-      {
-        path: '/post/:id',
-        element: <PostPage />,
-      },
-      {
-        path: '/login',
-        element: <LoginPage />,
-      },
-      {
-        path: '/register',
-        element: <RegisterPage />,
-      },
-    ],
-  },
-]);
+import { SharedLayout } from './layouts';
+import {
+  HomePage,
+  LoginPage,
+  PostPage,
+  RegisterPage,
+  WritePage,
+  SettingsPage,
+} from './pages';
+import { Context } from './context/Context';
 
 function App() {
+  const { user } = useContext(Context);
+
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <SharedLayout />,
+      children: [
+        {
+          index: true,
+          element: <HomePage />,
+        },
+        {
+          path: 'post/:id',
+          element: <PostPage />,
+        },
+        {
+          path: 'login',
+          element: user ? <HomePage /> : <LoginPage />,
+        },
+        {
+          path: 'register',
+          element: user ? <HomePage /> : <RegisterPage />,
+        },
+        {
+          path: 'write',
+          element: user ? <WritePage /> : <RegisterPage />,
+        },
+        {
+          path: 'settings',
+          element: user ? <SettingsPage /> : <RegisterPage />,
+        },
+      ],
+    },
+  ]);
+
   return <RouterProvider router={router} />;
 }
 

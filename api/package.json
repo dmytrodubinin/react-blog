@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "concurrently": "^8.2.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.5.2",
@@ -15,8 +14,7 @@
   "scripts": {
     "start": "nodemon index.js",
     "server": "nodemon index.js",
-    "client": "npm run dev --prefix ../client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "client": "npm run dev --prefix ../client"
   },
   "author": "",
   "license": "ISC",

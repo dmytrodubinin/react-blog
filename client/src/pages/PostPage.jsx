@@ -28,7 +28,6 @@ const PostPage = () => {
     getPost();
   }, [id]);
 
-  // FIXME: DELETE POST
   const handleDelete = async () => {
     try {
       await axios.delete(`/api/posts/${post._id}`, {

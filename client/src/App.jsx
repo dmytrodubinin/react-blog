@@ -7,7 +7,7 @@ import {
   PostPage,
   RegisterPage,
   WritePage,
-  SettingsPage,
+  ProfilePage,
 } from './pages';
 import { Context } from './context/Context';
 
@@ -40,8 +40,8 @@ function App() {
           element: user ? <WritePage /> : <RegisterPage />,
         },
         {
-          path: 'settings',
-          element: user ? <SettingsPage /> : <RegisterPage />,
+          path: 'profile',
+          element: user ? <ProfilePage /> : <RegisterPage />,
         },
       ],
     },

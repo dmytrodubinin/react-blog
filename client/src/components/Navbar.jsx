@@ -6,6 +6,7 @@ import { Context } from '../context/Context';
 
 const Navbar = () => {
   const { user, dispatch } = useContext(Context);
+  const PF = 'http://localhost:5000/images/';
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
@@ -82,7 +83,7 @@ const Navbar = () => {
               >
                 <div className="w-8 rounded-full">
                   {user.profilePic ? (
-                    <img alt={user.username} src={user.profilePic} />
+                    <img src={PF + user.profilePic} alt={user.username} />
                   ) : (
                     <FaUserCheck className="h-full w-full" />
                   )}
@@ -93,13 +94,10 @@ const Navbar = () => {
                 className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
               >
                 <li>
-                  <Link to="#" className="justify-between">
+                  <Link to="/profile" className="justify-between">
                     Profile
                     <span className="badge">New</span>
                   </Link>
-                </li>
-                <li>
-                  <Link to="/settings">Settings</Link>
                 </li>
                 <li>
                   <Link to="/write">Write</Link>

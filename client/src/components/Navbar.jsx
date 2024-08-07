@@ -1,11 +1,17 @@
 import { RiMenu2Fill } from 'react-icons/ri';
-import { FaRegUserCircle, FaSearch, FaUserCheck } from 'react-icons/fa';
+import {
+  FaMoon,
+  FaRegUserCircle,
+  FaSearch,
+  FaSun,
+  FaUserCheck,
+} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { Context } from '../context/Context';
 
 const Navbar = () => {
-  const { user, dispatch } = useContext(Context);
+  const { theme, handleTheme, user, dispatch } = useContext(Context);
   const PF = 'http://localhost:5000/images/';
 
   const handleLogout = () => {
@@ -70,6 +76,20 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
+        {/* Theme switcher */}
+        <label className="grid cursor-pointer place-items-center">
+          <input
+            type="checkbox"
+            value={theme}
+            className="theme-controller toggle col-span-2 col-start-1 row-start-1 bg-base-content"
+            checked={theme === 'dim'}
+            onChange={handleTheme}
+            aria-label="Theme Switcher"
+          />
+          <FaSun className="col-start-1 row-start-1 fill-base-100 stroke-base-100" />
+          <FaMoon className="col-start-2 row-start-1 fill-base-100 stroke-base-100" />
+        </label>
+        {/* Search */}
         <button className="btn btn-circle btn-ghost">
           <FaSearch className="h-5 w-5" />
         </button>

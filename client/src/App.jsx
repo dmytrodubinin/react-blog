@@ -8,6 +8,7 @@ import {
   RegisterPage,
   WritePage,
   ProfilePage,
+  SettingsPage,
 } from './pages';
 import { Context } from './context/Context';
 
@@ -42,6 +43,10 @@ function App() {
         {
           path: 'profile',
           element: user ? <ProfilePage /> : <RegisterPage />,
+        },
+        {
+          path: 'settings',
+          element: user ? <SettingsPage /> : <RegisterPage />,
         },
       ],
     },

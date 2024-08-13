@@ -8,11 +8,17 @@ const Sidebar = () => {
   const [cats, setCats] = useState([]);
 
   useEffect(() => {
-    const getCats = async () => {
-      const res = await axios.get('/api/categories');
-      setCats(res.data);
+    const getCatsWithCounts = async () => {
+      try {
+        const res = await axios.get('/api/categories/with-post-counts');
+        // Filter out categories with zero posts
+        const filteredCats = res.data.filter((cat) => cat.postCount > 0);
+        setCats(filteredCats);
+      } catch (error) {
+        console.error(error);
+      }
     };
-    getCats();
+    getCatsWithCounts();
   }, []);
 
   return (
@@ -47,7 +53,8 @@ const Sidebar = () => {
               className="btn btn-primary"
             >
               <FaHashtag />
-              {cat.name}
+              {cat.name}{' '}
+              <span className="badge badge-outline ml-2">{cat.postCount}</span>
             </Link>
           ))}
         </div>

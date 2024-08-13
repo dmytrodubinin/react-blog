@@ -4,6 +4,7 @@ import { Sidebar } from '../components';
 import { useContext, useEffect, useState } from 'react';
 import { Context } from '../context/Context';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import MultiSelect from '../components/MultiSelect';
 
 const PostPage = () => {
   const { id } = useParams();
@@ -13,6 +14,8 @@ const PostPage = () => {
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const [updateMode, setUpdateMode] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   useEffect(() => {
     const getPost = async () => {
@@ -21,12 +24,25 @@ const PostPage = () => {
         setPost(res.data);
         setTitle(res.data.title);
         setDesc(res.data.desc);
+        setSelectedCategories(res.data.categories || []);
       } catch (error) {
         console.log(error);
       }
     };
     getPost();
   }, [id]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const res = await axios.get(`/api/categories`);
+        setCategories(res.data.map((category) => category.name));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCategories();
+  }, []);
 
   const handleDelete = async () => {
     try {
@@ -45,6 +61,7 @@ const PostPage = () => {
         username: user.username,
         title,
         desc,
+        categories: selectedCategories,
       });
       setUpdateMode(false);
     } catch (err) {
@@ -66,29 +83,46 @@ const PostPage = () => {
             </figure>
           )}
           {updateMode ? (
-            <input
-              type="text"
-              value={title}
-              className="w-full"
-              autoFocus
-              onChange={(e) => setTitle(e.target.value)}
-            />
+            <>
+              <input
+                type="text"
+                value={title}
+                className="input input-bordered w-full"
+                autoFocus
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <MultiSelect
+                options={categories}
+                selectedOptions={selectedCategories}
+                setSelectedOptions={setSelectedCategories}
+              />
+            </>
           ) : (
-            <h1 className="my-4 text-3xl font-bold">
-              {title}
-              {post.username === user?.username && (
-                <div className="float-right flex">
-                  <FaEdit
-                    className="h-5 w-5 cursor-pointer text-primary"
-                    onClick={() => setUpdateMode(true)}
-                  />
-                  <FaTrash
-                    className="h-5 w-5 cursor-pointer text-error"
-                    onClick={handleDelete}
-                  />
-                </div>
-              )}
-            </h1>
+            <>
+              <h1 className="my-4 text-3xl font-bold">
+                {title}
+                {post.username === user?.username && (
+                  <div className="float-right flex">
+                    <FaEdit
+                      className="h-5 w-5 cursor-pointer text-primary"
+                      onClick={() => setUpdateMode(true)}
+                    />
+                    <FaTrash
+                      className="h-5 w-5 cursor-pointer text-error"
+                      onClick={handleDelete}
+                    />
+                  </div>
+                )}
+              </h1>
+              <div className="categories my-4">
+                <strong>Categories: </strong>
+                {selectedCategories.length > 0 ? (
+                  selectedCategories.join(', ')
+                ) : (
+                  <span>No categories selected</span>
+                )}
+              </div>
+            </>
           )}
 
           <div className="mb-4 flex justify-between">
@@ -102,7 +136,7 @@ const PostPage = () => {
           </div>
           {updateMode ? (
             <textarea
-              className="w-full"
+              className="textarea textarea-bordered w-full"
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
             />

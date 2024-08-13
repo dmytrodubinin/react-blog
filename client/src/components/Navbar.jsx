@@ -120,6 +120,9 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/settings">Settings</Link>
+                </li>
+                <li>
                   <Link to="/write">Write</Link>
                 </li>
                 <li className="btn btn-error" onClick={handleLogout}>

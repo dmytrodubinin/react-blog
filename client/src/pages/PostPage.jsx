@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Sidebar } from '../components';
 import { useContext, useEffect, useState } from 'react';
 import { Context } from '../context/Context';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaHashtag, FaTrash } from 'react-icons/fa';
 import MultiSelect from '../components/MultiSelect';
 
 const PostPage = () => {
@@ -116,11 +116,18 @@ const PostPage = () => {
               </h1>
               <div className="categories my-4">
                 <strong>Categories: </strong>
-                {selectedCategories.length > 0 ? (
-                  selectedCategories.join(', ')
-                ) : (
-                  <span>No categories selected</span>
-                )}
+                {categories.map((category) => (
+                  <Link
+                    key={category}
+                    to={`/?cat=${category}`}
+                    className="btn mr-2"
+                  >
+                    <span className="flex">
+                      <FaHashtag />
+                      {category}
+                    </span>
+                  </Link>
+                ))}
               </div>
             </>
           )}

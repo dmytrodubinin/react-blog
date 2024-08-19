@@ -52,8 +52,10 @@ const Sidebar = () => {
               to={`/?cat=${cat.name}`}
               className="btn btn-primary"
             >
-              <FaHashtag />
-              {cat.name}{' '}
+              <span className="flex">
+                <FaHashtag />
+                {cat.name}
+              </span>
               <span className="badge badge-outline ml-2">{cat.postCount}</span>
             </Link>
           ))}

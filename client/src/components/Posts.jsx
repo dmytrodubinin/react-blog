@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Card from './Card';
 
 const Posts = ({ posts }) => {
@@ -6,14 +7,21 @@ const Posts = ({ posts }) => {
       {posts.map((post) => {
         return <Card key={post._id} post={post} />;
       })}
-      {/* <Card img="https://images.pexels.com/photos/6685428/pexels-photo-6685428.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" /> */}
-      {/* <Card img="https://images.pexels.com/photos/6758029/pexels-photo-6758029.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" /> */}
-      {/* <Card img="https://images.pexels.com/photos/6711867/pexels-photo-6711867.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" /> */}
-      {/* <Card img="https://images.pexels.com/photos/5490778/pexels-photo-5490778.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" /> */}
-      {/* <Card img="https://images.pexels.com/photos/4916559/pexels-photo-4916559.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" /> */}
-      {/* <Card img="https://images.pexels.com/photos/6685428/pexels-photo-6685428.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" /> */}
     </div>
   );
+};
+
+Posts.propTypes = {
+  posts: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      desc: PropTypes.string.isRequired,
+      photo: PropTypes.string,
+      username: PropTypes.string.isRequired,
+      categories: PropTypes.arrayOf(PropTypes.string),
+    }),
+  ).isRequired,
 };
 
 export default Posts;

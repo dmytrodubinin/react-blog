@@ -38,6 +38,9 @@ const WritePage = () => {
       data.append('name', filename);
       data.append('file', file);
       newPost.photo = filename;
+      const webpFilename = filename.replace(/\.[^/.]+$/, '.webp');
+      newPost.webpPhoto = webpFilename;
+
       try {
         await axios.post('/api/upload', data);
       } catch (err) {

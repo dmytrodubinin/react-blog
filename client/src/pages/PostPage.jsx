@@ -73,13 +73,18 @@ const PostPage = () => {
     <>
       <div className="container mx-auto flex max-w-screen-2xl flex-col justify-between gap-8 py-4 md:flex-row">
         <section className="w-full">
-          {post.photo && (
+          {(post.photo || post.webpPhoto) && (
             <figure>
-              <img
-                className="h-56 w-full rounded-lg object-cover"
-                src={PF + post.photo}
-                alt="title"
-              />
+              <picture>
+                {post.webpPhoto && (
+                  <source srcSet={PF + post.webpPhoto} type="image/webp" />
+                )}
+                <img
+                  className="max-h-80 w-full object-cover"
+                  src={PF + post.photo}
+                  alt="title"
+                />
+              </picture>
             </figure>
           )}
           {updateMode ? (

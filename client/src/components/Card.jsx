@@ -4,15 +4,21 @@ import { Link } from 'react-router-dom';
 
 const Card = ({ post }) => {
   const PF = 'http://localhost:5000/images/';
+  console.log(post.webpPhoto);
   return (
     <div className="card card-compact max-h-[500px] bg-base-100 shadow-xl">
-      {post.photo ? (
+      {post.photo || post.webpPhoto ? (
         <figure>
-          <img
-            className="max-h-80 w-full object-cover"
-            src={PF + post.photo}
-            alt="title"
-          />
+          <picture>
+            {post.webpPhoto && (
+              <source srcSet={PF + post.webpPhoto} type="image/webp" />
+            )}
+            <img
+              className="max-h-80 w-full object-cover"
+              src={PF + post.photo}
+              alt="title"
+            />
+          </picture>
         </figure>
       ) : (
         <figure>
@@ -54,6 +60,7 @@ Card.propTypes = {
     title: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,
     photo: PropTypes.string,
+    webpPhoto: PropTypes.string,
     username: PropTypes.string.isRequired,
     categories: PropTypes.arrayOf(PropTypes.string),
     createdAt: PropTypes.string.isRequired,

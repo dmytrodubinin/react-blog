@@ -4,11 +4,13 @@ import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
 import multer from "multer";
+import sharp from "sharp";
 
 import { router as authRoute } from "./routes/auth.js";
 import { router as userRoute } from "./routes/users.js";
 import { router as postRoute } from "./routes/posts.js";
 import { router as categoryRoute } from "./routes/categories.js";
+import Post from "./models/postModel.js";
 
 const app = express();
 
@@ -32,14 +34,34 @@ const storage = multer.diskStorage({
     cb(null, "images");
   },
   filename: (req, file, cb) => {
+    // Store the file with its original extension first
     cb(null, req.body.name);
-    // cb(null, 'logo.svg');
   },
 });
 
 const upload = multer({ storage: storage });
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  res.status(200).json("File has been uploaded");
+
+app.post("/api/upload", upload.single("file"), async (req, res) => {
+  try {
+    const originalFilePath = path.join(__dirname, "images", req.body.name);
+    const webpFilePath = originalFilePath.replace(/\.[^/.]+$/, ".webp");
+
+    // Convert the uploaded image to WebP format using sharp
+    await sharp(originalFilePath).webp({ quality: 80 }).toFile(webpFilePath);
+
+    const post = new Post({
+      title: req.body.title,
+      desc: req.body.desc,
+      photo: `/images/${req.body.name}`,
+      webpPhoto: `/images/${path.basename(webpFilePath)}`,
+    });
+
+    await post.save();
+
+    res.status(200).json("File has been uploaded and converted to WebP");
+  } catch (error) {
+    res.status(500).json({ message: "File upload failed", error });
+  }
 });
 
 app.use("/api/auth", authRoute);

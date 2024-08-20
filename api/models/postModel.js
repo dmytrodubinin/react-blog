@@ -15,6 +15,7 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    webpPhoto: { type: String, required: false },
     username: {
       type: String,
       required: true,

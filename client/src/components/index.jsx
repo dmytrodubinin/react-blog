@@ -5,3 +5,4 @@ export { default as Sidebar } from './Sidebar';
 export { default as Posts } from './Posts';
 export { default as Card } from './Card';
 export { default as MultiSelect } from './MultiSelect';
+export { default as TextEditor } from './TextEditor';

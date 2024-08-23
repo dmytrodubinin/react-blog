@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Card = ({ post }) => {
   const PF = 'http://localhost:5000/images/';
-  console.log(post.webpPhoto);
+
   return (
     <div className="card card-compact max-h-[500px] bg-base-100 shadow-xl">
       {post.photo || post.webpPhoto ? (
@@ -31,7 +31,12 @@ const Card = ({ post }) => {
       <div className="card-body">
         <h2 className="card-title">{post.title}</h2>
         <p>{new Date(post.createdAt).toDateString()}</p>
-        <p>{post.desc}</p>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: post.desc.substring(0, 50) + '...',
+          }}
+        ></div>
+
         <div className="card-actions flex-nowrap items-center justify-between">
           <div className="flex flex-wrap gap-2">
             {post.categories.map((c) => (

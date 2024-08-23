@@ -2,7 +2,7 @@ import axios from 'axios';
 import { FaPlusCircle } from 'react-icons/fa';
 import { useContext, useEffect, useState } from 'react';
 import { Context } from '../context/Context';
-import { MultiSelect } from '../components';
+import { MultiSelect, TextEditor } from '../components';
 
 const WritePage = () => {
   const [title, setTitle] = useState('');
@@ -96,12 +96,7 @@ const WritePage = () => {
           </label>
         </div>
         <div className="w-full">
-          <textarea
-            placeholder="Tell your story..."
-            type="text"
-            className="textarea textarea-bordered w-full"
-            onChange={(e) => setDesc(e.target.value)}
-          ></textarea>
+          <TextEditor onChange={(content) => setDesc(content)} />
         </div>
         <button className="btn btn-primary mt-4" type="submit">
           Publish

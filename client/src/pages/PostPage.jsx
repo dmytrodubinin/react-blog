@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
-import { Sidebar } from '../components';
+import { Sidebar, TextEditor } from '../components';
 import { useContext, useEffect, useState } from 'react';
 import { Context } from '../context/Context';
 import { FaEdit, FaHashtag, FaTrash } from 'react-icons/fa';
 import MultiSelect from '../components/MultiSelect';
+import { addTailwindClassesToContent } from '../utils/htmlUtils';
 
 const PostPage = () => {
   const { id } = useParams();
@@ -147,13 +148,17 @@ const PostPage = () => {
             <p>{new Date(post.createdAt).toDateString()}</p>
           </div>
           {updateMode ? (
-            <textarea
-              className="textarea textarea-bordered w-full"
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
+            <TextEditor
+              onChange={(content) => setDesc(content)}
+              initialContent={desc}
             />
           ) : (
-            <p className="">{desc}</p>
+            <div
+              className="post-content mt-4"
+              dangerouslySetInnerHTML={{
+                __html: addTailwindClassesToContent(desc),
+              }}
+            />
           )}
           {updateMode && (
             <button className="btn btn-primary" onClick={handleUpdate}>
